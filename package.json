@@ -1,0 +1,38 @@
+{
+  "name": "mc-server-manager",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "jest --watchAll --runInBand",
+    "dev": "nodemon -r dotenv/config src/index.js dotenv_config_path=./config/env/dev.env"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./tests/jest.setup.js"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.573.0",
+    "blakejs": "^1.1.0",
+    "chalk": "^3.0.0",
+    "crypto-js": "^3.1.9-1",
+    "debug": "^4.1.1",
+    "discord.js": "^11.5.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "hbs": "^4.0.6",
+    "jest": "^24.9.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.11",
+    "node-ssh": "^6.0.0",
+    "path": "^0.12.7",
+    "socket.io": "^2.3.0",
+    "supertest": "^4.0.2",
+    "validator": "^12.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}
