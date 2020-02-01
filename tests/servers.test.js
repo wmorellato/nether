@@ -16,14 +16,13 @@
  */
 
 const app = require('../src/app')
-const chalk = require('chalk')
 const { EVENTS, registerEventCallback, unregisterEventCallback } = require('../src/lib/minecraft/server_monitor')
 const request = require('supertest')
 const Server = require('../src/models/server')
 const { setupDatabase, serverOneId, userOneId, userOne } = require('./fixtures/db')
 const { ec2InstanceId } = require('./__mocks__/aws-sdk')
 
-jest.mock('../src/lib/minecraft/remote.js')
+jest.mock('../src/lib/minecraft/manager.js')
 
 beforeEach(setupDatabase)
 
@@ -57,7 +56,17 @@ test('should create new server', async () => {
     expect(server).not.toBeNull()
 })
 
-describe('monitor tests', () => {
+test('should update jar', async () => {
+    await request(app)
+            .post(`/servers/update`)
+            .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+            .send({
+                id: serverOneId
+            })
+            .expect(200)
+})
+
+describe.skip('monitor tests', () => {
     test('should notify online', async (done) => {
         registerEventCallback(EVENTS.ONLINE, onlineCallback)
 

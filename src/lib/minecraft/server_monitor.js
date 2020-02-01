@@ -1,6 +1,7 @@
 const debug = require('debug')('minecraft:monitor')
 const config = require('../../../config/server.config')
-const { getServerInfo, openLogsSession } = require('./remote')
+const { openLogsSession } = require('./manager')
+const { getServerInfo } = require('./remote')
 
 const UPDATE_INTERVAL = 1 * 1000
 const EVENTS = {

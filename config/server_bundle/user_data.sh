@@ -5,8 +5,6 @@
 JAR_MAJOR_VERSION=1.15
 JAR_MINOR_VERSION=8
 JAR_NAME=paper-$JAR_MAJOR_VERSION.$JAR_MINOR_VERSION.jar
-XMS=-Xms1G
-XMX=-Xmx1G
 USER=ec2-user
 
 sudo yum -y install java-1.8.0-openjdk
@@ -24,5 +22,11 @@ echo '#By changing the setting below to TRUE you are indicating your agreement t
 #You also agree that tacos are tasty, and the best food in the world.
 #Sat Dec 14 14:59:43 UTC 2019
 eula=true' > eula.txt
-echo java $XMS $XMX -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=100 -XX:+DisableExplicitGC -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:G1MixedGCLiveThresholdPercent=35 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -jar /home/$USER/minecraft/bin/$JAR_NAME nogui > start.sh
+
+# setting the startup script
+echo XMS=-Xms1G >  start.sh
+echo XMX=-Xmx1G >> start.sh
+echo JAR_NAME=paper-$JAR_MAJOR_VERSION.$JAR_MINOR_VERSION.jar >> start.sh
+echo >> start.sh
+echo java \$XMS \$XMX -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=100 -XX:+DisableExplicitGC -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:G1MixedGCLiveThresholdPercent=35 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -jar /home/$USER/minecraft/bin/\$JAR_NAME nogui >> start.sh
 chmod +x start.sh

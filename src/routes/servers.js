@@ -6,8 +6,9 @@ const { ServerMonitor } = require('../lib/minecraft/server_monitor')
 const {
     startServer,
     stopServer,
-    restartServer
-} = require('../lib/minecraft/remote')
+    restartServer,
+    updateJar
+} = require('../lib/minecraft/manager')
 
 const serversRouter = new express.Router()
 
@@ -106,6 +107,27 @@ serversRouter.get('/servers/:id/console', auth, async (req, res) => {
             throw new Error('could not find specified server')
 
         res.render('console')
+    } catch (e) {
+        debug(e)
+        res.status(500).send({ error: e.message })
+    }
+})
+
+serversRouter.post('/servers/update', auth, async (req, res) => {
+    try {
+        const _id = req.body.id
+        const jarUrl = req.body.jarUrl
+        
+        if (!_id)
+            throw new Error('invalid server id')
+
+        const server = await Server.findById(_id)
+
+        if (!server)
+            throw new Error('could not find specified server')
+
+        await updateJar(server, jarUrl)
+        res.send({ server: server._id, status: 'updating' })
     } catch (e) {
         debug(e)
         res.status(500).send({ error: e.message })

@@ -10,12 +10,28 @@ Hope you enjoy.
 
 ## TODO
 
+ - Create a decent documentation
  - Integrate this project with a frontend. Now it is only an API.
  - Manage server files (change server icon, jars, add/remove worlds).
  - Automate steps to create an instance and configure it to host a server (this is somewhat complex).
  - Integrate with S3 for backups, Cloudwatch and other services.
 
 ## Changelog
+
+### [0.1.0] - 2020-02-01
+
+#### Added:
+
+- Jar upgrade
+    - If the client does not specify a jar url, Nether will download the latest available version from Paper.
+    - For now I don't delete the old jar, just replace the jar name in `start.sh` script.
+    - Helper functions to get the latest version from Paper that can be expanded for other flavors.
+
+#### Modified:
+
+- `start.sh`
+    - It is easier to replace the jars if the environment variables for the jar name is in `start.sh`.
+    - I also moved the env variables `XMS` and `XMX` for the future when the client needs to modify the memory allocation.
 
 ### [0.0.1] - 2019-12-14
 
