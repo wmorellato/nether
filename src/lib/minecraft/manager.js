@@ -37,31 +37,47 @@ const getCommand = (action, server, args) => {
 }
 
 /**
+ * Just check if there is a screen with a name matching
+ * the server id.
+ */
+const screenExists = async (server) => {
+    try {
+        const clearSshKey = server.getSshKey()
+
+        var r = await runCommand(server.hostname, server.user, clearSshKey, undefined, getCommand(SERVER_ACTIONS.LIST_SCREENS))
+        if (!r)
+            throw new Error('could not run ls command')
+
+        var screens = [ ...r.stdout.matchAll(/^\t(\d+)\.(\w+)\t/gm) ]
+    
+        for (var i = 0; i < screens.length; i++) {
+            if (server._id.toString() === screens[i][2]) {
+                return true
+            }
+        }
+    
+        return false
+    } catch (e) {
+        console.log('screenExists', e)
+        return undefined
+    }
+}
+
+/**
  * The server is started in a separate screen in the remote instance
  * named after its _id in MongoDB. This allows to issue commands to
  * multiple servers (in case someone crazy wants more than one in a
  * single instance).
  */
-const startServer = (server) => {
+const startServer = async (server) => {
     const clearSshKey = server.getSshKey()
 
     // first we check if the server is already running
-    return runCommand(server.hostname, server.user, clearSshKey, undefined, getCommand(SERVER_ACTIONS.LIST_SCREENS))
-        .then((r) => {
-            if (!r)
-                throw new Error('error executing command ls')
+    if (await screenExists(server) === true) {
+        throw new Error(`server offline with _id ${server._id} already running`)
+    }
 
-            const stdout = r.stdout
-
-            var screens = [ ...stdout.matchAll(/^\t(\d+)\.(\w+)\t/gm) ]
-            for (var i = 0; i < screens.length; i++) {
-                if (server._id.toString() === screens[i][2]) {
-                    throw new Error(`server with _id ${server._id} already running`)
-                }
-            }
-
-            return runCommand(server.hostname, server.user, clearSshKey, undefined, getCommand(SERVER_ACTIONS.START, server))
-        })
+    return runCommand(server.hostname, server.user, clearSshKey, undefined, getCommand(SERVER_ACTIONS.START, server))
 }
 
 const stopServer = async (server) => {
@@ -159,6 +175,7 @@ const updateJar = async (server, jarUrl) => {
 
 module.exports = {
     SERVER_ACTIONS,
+    screenExists,
     startServer,
     stopServer,
     restartServer,

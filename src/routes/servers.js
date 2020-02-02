@@ -4,6 +4,7 @@ const express = require('express')
 const Server = require('../models/server')
 const { ServerMonitor } = require('../lib/minecraft/server_monitor')
 const {
+    screenExists,
     startServer,
     stopServer,
     restartServer,
@@ -57,9 +58,16 @@ serversRouter.get('/servers/:id/start', auth, async (req, res) => {
             throw new Error('could not find specified server')
         
         await startServer(server)
-        res.send({ server: server._id, status: 'starting' })
-
-        new ServerMonitor(server, io).startMonitoring()
+        
+        // this may not be the best way to check if the command
+        // was succesful. Maybe I should respond to the client
+        // asap and then inform it in case of errors
+        if (await screenExists(server) === true) {
+            res.send({ server: server._id, status: 'starting' })
+            new ServerMonitor(server, io).startMonitoring()
+        } else {
+            throw new Error('could not start server')
+        }
     } catch (e) {
         console.error(e)
         res.status(500).send({ error: e.message })
