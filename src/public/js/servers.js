@@ -1,20 +1,23 @@
-const socket = io()
+/* eslint-disable no-unused-vars */
+/* eslint-disable require-jsdoc */
+const socket = io();
 
 socket.on('status', (info) => {
-    console.log(info)
-    
-    if (info.online)
-        alert('server running!!')
-})
+  console.log(info);
+
+  if (info.online) {
+    alert('server running!!');
+  }
+});
 
 function startInstance(serverId) {
-    console.log('start', serverId)
+  console.log('start', serverId);
 
-    socket.emit('join', serverId, () => {
-        console.log('joined room')
-    })
+  socket.emit('join', serverId, () => {
+    console.log('joined room');
+  });
 
-    $.get(`/servers/${serverId}/start`, (r) => {
-        console.log(r)
-    })
+  $.get(`/servers/${serverId}/start`, (r) => {
+    console.log(r);
+  });
 }

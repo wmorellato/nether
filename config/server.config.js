@@ -4,9 +4,9 @@
  */
 
 const config = {
-    monitor: {
-        refresh: 1 * 1000
-    }
-}
+  monitor: {
+    refresh: 1 * 1000,
+  },
+};
 
-module.exports = config
+module.exports = config;

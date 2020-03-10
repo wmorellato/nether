@@ -71,6 +71,9 @@ Alright, Nether is now configured to access your AWS account. Now let's create a
 ## EC2
 
 Coming soon. Need to decide between creating a template for instances directly at AWS or providing a full tutorial.
+* Open AWS Console and go to EC2 instances page. We will use a template I created to help launch a new instance.
+
+Nether (lt-0ca48c32a757bd091)
 
 ## TODO
 
@@ -81,6 +84,17 @@ Coming soon. Need to decide between creating a template for instances directly a
  - Integrate with S3 for backups, Cloudwatch and other services.
 
 ## Changelog
+
+### [0.2.0] - 2020-03-10
+
+#### Added:
+
+- Beginning of support for S3 to backup server files.
+- Class to manage `server.properties` file.
+
+#### Modified:
+
+- Code style. Now using [eslint-google-style](https://github.com/google/eslint-config-google#eslint-config-google-).
 
 ### [0.1.1] - 2020-02-02
 

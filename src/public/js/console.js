@@ -1,17 +1,17 @@
 const getRoom = () => {
-    return '5de193272e10c617f55855f1' // server id
-}
+  return '5df5232ed0a5a4037bdc0756'; // server id
+};
 
-const socket = io()
+const socket = io();
 
 socket.emit('join', getRoom(), () => {
-    console.log('joined room', getRoom())
-})
+  console.log('joined room', getRoom());
+});
 
 socket.on('logs', (data) => {
-    console.log('logs', data)
-})
+  console.log('logs', data);
+});
 
 socket.on('status', (status) => {
-    console.log('status', status)
-})
+  console.log('status', status);
+});
