@@ -29,7 +29,7 @@
     "mongoose": "^5.7.11",
     "node-ssh": "^6.0.0",
     "path": "^0.12.7",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "supertest": "^4.0.2",
     "validator": "^12.0.0"
   },
